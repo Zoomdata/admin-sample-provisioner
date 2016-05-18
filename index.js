@@ -103,13 +103,26 @@ vorpal
      count--;
    }
    async.each(array, function(user, callback) {
-     createAccount('accounts', user.username, 'supervisor', 'supervisor')
-     callback(
-       async.nextTick(function() {
+     async.series([
+       function(cb1) {
+         createAccount('accounts', user.username, 'supervisor', 'supervisor');
+         cb1();
+       },
+       function(cb2) {
          addUserToAccountName('accounts/', user.username, user.username + 'user1', 'supervisor', 'supervisor');
-       })
-     );
+         cb2();
+       }
+     ])
+     callback();
    })
+  //  async.each(array, function(user, callback) {
+  //    createAccount('accounts', user.username, 'supervisor', 'supervisor')
+  //    callback(
+  //      async.nextTick(function() {
+  //        addUserToAccountName('accounts/', user.username, user.username + 'user1', 'supervisor', 'supervisor');
+  //      })
+  //    );
+  //  })
    cb();
 })
 

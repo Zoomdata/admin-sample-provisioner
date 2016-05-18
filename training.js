@@ -8,7 +8,7 @@ var async = require("async");
 var defaultSettings = {
     "async": true,
     "crossDomain": false,
-    "baseUrl": "https://training2.zoomdata.com:8443/zoomdata/api/",
+    "baseUrl": "https://training.zoomdata.com/zoomdata/api/",
     "headers": {
       'accept': "application/vnd.zoomdata.v2+json,application/vnd.zoomdata+json",
       'x-zoomdata-media-type': 'application/vnd.zoomdata.v1+json',

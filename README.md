@@ -1,4 +1,4 @@
-# zd-admin-app-01-
+# zd-admin-app-01
 
 Trainers must often deploy numerous accounts or users for training. Having a tool to automate the process will improve efficiency and reduce errors in deployment.
 
@@ -19,5 +19,5 @@ Trainers must often deploy numerous accounts or users for training. Having a too
 
 ```
   note: currently the server address and auth is hardcoded, this will be updated
-  to allow for prompted user input shortly. 
+  to allow for prompted user input shortly.
 ```
