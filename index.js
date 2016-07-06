@@ -3,11 +3,21 @@ var vorpal = require('vorpal')();
 var chalk = vorpal.chalk;
 var async = require("async");
 
+
+// You must replace these credentials with your own supervisor credentials
+
+var credentials = {
+    id: "supervisor",
+    pw: "supervisor"
+};
+
 // default settings:
 
 var defaultSettings = {
     "async": true,
     "crossDomain": true,
+    
+    // You must replace the following URL with your own Zoomdata instance
     "baseUrl": "https://preview.zoomdata.com/zoomdata/api/",
     "headers": {
       'accept': "application/vnd.zoomdata.v2+json,application/vnd.zoomdata+json",
@@ -16,7 +26,7 @@ var defaultSettings = {
       "cache-control": "no-cache"
     },
     json: true
-  }
+  };
 
 
 function assignUrl(url) {
@@ -25,11 +35,14 @@ function assignUrl(url) {
 }
 
 
-function createAccount(url, accountName, username, password) {
-  var options = Object.assign(defaultSettings, {url}, {body:{name: accountName}})
+function createAccount(url, accountName) {
+  var options = Object.assign(defaultSettings, {url}, {body:{name: accountName}});
+
+    console.log("Credentials: ", credentials);
+    
   request
     .post(options)
-    .auth(username, password)
+    .auth(credentials.id, credentials.pw)
     .then(function(response) {
       console.log(response);
     })
@@ -77,23 +90,20 @@ function addUserToAccountName(url, accountName, newAccountName, username, passwo
 // vorpal commands:
 
 vorpal
-.command('create account [accountName] [username] [password]', 'Add an account.')
+.command('create account [accountName]', 'Add an account.')
 .action(function(args, cb) {
   var self = this;
    var username = args.username;
    var password = args.password;
    var accountName = args.accountName;
-   createAccount('accounts', accountName, username, password)
+   createAccount('accounts', accountName)
    cb();
 })
 
-
 vorpal
-.command('create  [suffix] [count] [username] [password]', 'Add multiple accounts, each with an admin.')
+.command('create multiple [suffix] [count]', 'Add multiple accounts, each with an admin.')
 .action(function(args, cb) {
    var self = this;
-   var username = args.username;
-   var password = args.password;
    var suffix = args.suffix;
    var count = args.count;
    var array = []
@@ -105,11 +115,11 @@ vorpal
    async.each(array, function(user, callback) {
      async.series([
        function(cb1) {
-         createAccount('accounts', user.username, 'supervisor', 'supervisor');
+         createAccount('accounts', user.username, credentials.id, credentials.pw);
          cb1();
        },
        function(cb2) {
-         addUserToAccountName('accounts/', user.username, user.username + 'user1', 'supervisor', 'supervisor');
+         addUserToAccountName('accounts/', user.username, user.username + 'user1', credentials.id, credentials.pw);
          cb2();
        }
      ])
@@ -119,7 +129,7 @@ vorpal
   //    createAccount('accounts', user.username, 'supervisor', 'supervisor')
   //    callback(
   //      async.nextTick(function() {
-  //        addUserToAccountName('accounts/', user.username, user.username + 'user1', 'supervisor', 'supervisor');
+  //        addUserToAccountName('accounts/', user.username, user.username + 'user1', credentials.id, credentials.pw);
   //      })
   //    );
   //  })
@@ -128,16 +138,30 @@ vorpal
 
 
 vorpal
-  .command('aa [accountName] [newAccountName] [username] [password]', 'Adds account with one user')
+  .command('create accountb [accountName] [newAccountName] [username] [password]', 'Adds account with one user')
   .action(function(args, cb) {
     var accountName = args.accountName;
     var newAccountName = args.newAccountName;
     var username = args.username;
     var password = args.password;
-    addUserToAccountName('accounts/', accountName, newAccountName, 'supervisor', 'supervisor');
+    addUserToAccountName('accounts/', accountName, newAccountName, credentials.id, credentials.pw);
     cb();
   })
 
-  vorpal
+vorpal
+    .command('login [serverUrl] [username] [password]', 'Sets login credentials for server. serverUrl = www.xyz.com ONLY. No protocol, no extensions')
+    .action(function(args, cb) {
+        var serverUrl = args.serverUrl;
+        var username = args.username;
+        var password = args.password;
+    
+        credentials.id = username;
+        credentials.pw = password;
+        defaultSettings.baseUrl = "https://" + serverUrl + "/zoomdata/api/";
+    
+        cb();
+})
+
+vorpal
     .delimiter(chalk.magenta('zd-provisioner:'))
     .show();
