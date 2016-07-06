@@ -77,7 +77,7 @@ function addUserToAccountName(url, accountName, newAccountName, username, passwo
 // vorpal commands:
 
 vorpal
-.command('c a [accountName] [username] [password]', 'Adds an account.')
+.command('create account [accountName] [username] [password]', 'Add an account.')
 .action(function(args, cb) {
   var self = this;
    var username = args.username;
@@ -89,7 +89,7 @@ vorpal
 
 
 vorpal
-.command('c aa [suffix] [count] [username] [password]', 'Adds multiple accounts.')
+.command('create  [suffix] [count] [username] [password]', 'Add multiple accounts, each with an admin.')
 .action(function(args, cb) {
    var self = this;
    var username = args.username;
@@ -139,5 +139,5 @@ vorpal
   })
 
   vorpal
-    .delimiter(chalk.magenta('zoom$'))
+    .delimiter(chalk.magenta('zd-provisioner:'))
     .show();
