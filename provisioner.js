@@ -43,7 +43,12 @@ function createAccount(url, accountName) {
     })
 }
 
+
 function listAccounts(url) {
+
+  // The default limit is 25, which is often too low
+  // so we increase it to a number that will usually
+  // return all account objects.
 
   url = url + "?limit=500";
   var options = Object.assign(currentSettings, {url});
@@ -52,6 +57,11 @@ function listAccounts(url) {
     .get(options)
     .auth(credentials.id, credentials.pw)
     .then(function(response) {
+
+      // Take returned list of account objects
+      // and extract the name from each object
+      // and add it to the list of names.
+
       var data = response.data;
       var nameList = [];
 
@@ -72,7 +82,17 @@ function listAccounts(url) {
 
 
 function getAccountIdByName(name) {
+
+  // We use bluebird.js to make a function (getAccountIdByName)
+  // return a promise. You can use native javascript
+  // promises or other approaches to help manage the
+  // asynchronous nature of REST calls.
+
   return new Promise(function(resolve,reject) {
+
+    // The /accounts/name api retrieves an account by name
+    // and returns an account object.
+
     var url = 'accounts/name/' + name;
     var options = Object.assign(currentSettings, {url});
     var accountId;
@@ -81,7 +101,9 @@ function getAccountIdByName(name) {
         .get(options)
         .auth(credentials.id, credentials.pw)
         .then(function(response) {
-          return response.links[0].href.split('/').pop();  //accountId
+
+          // parse and return the accountId from the account object
+          return response.links[0].href.split('/').pop();
         });
 
     if (accountIdval) {
@@ -163,6 +185,8 @@ vorpal
   }
 
   nameList.forEach(function(name) {
+
+    // The createAccount method requires the API path
     createAccount('accounts', name.username, credentials.id, credentials.pw);
   });
 
@@ -173,6 +197,8 @@ vorpal
 vorpal
 .command('list accounts', 'List all accounts')
 .action(function(args,cb) {
+
+  // The listAccount methods requires the API path
   listAccounts('accounts');
   cb();
 });
@@ -187,11 +213,18 @@ vorpal
   getAccountIdByName(name)
   .then( function(id) {
     deleteAccount(id);
+  })
+  .catch( function(err) {
+    console.log("Couldn't delete account ", name, " because: ", err.message);
   });
 
   cb();
 });
 
+
+
+/* You can add more commands by copying and customizing the
+following vorpal call. */
 
 /*
 vorpal
