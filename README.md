@@ -1,6 +1,6 @@
-# zd-admin-app-01
+# Sample Provisioner
 
-Trainers must often deploy numerous accounts or users for training. Having a tool to automate the process will improve efficiency and reduce errors in deployment.
+This sample application demonstrates the use of Zoomdata's administrative REST APIs. With it, you can create multiple accounts at once, list existing accounts, and delete accounts by name. The sample demonstrates using Zoomdata's GET /accounts API to retrieve an accountId by name and then using that accountId with Zoomdata's DELETE /accounts API to delete the account.
 
 ## Commands
 
@@ -15,9 +15,3 @@ Trainers must often deploy numerous accounts or users for training. Having a too
 	node index.js
 ```
 * Enter h to see available commands
-
-
-```
-  note: currently the server address and auth is hardcoded, this will be updated
-  to allow for prompted user input shortly.
-```
