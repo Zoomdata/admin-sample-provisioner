@@ -1,6 +1,6 @@
 # Sample Provisioner
 
-This sample application demonstrates the use of Zoomdata's administrative REST APIs. With it, you can create multiple accounts at once, list existing accounts, and delete accounts by name. The sample demonstrates using Zoomdata's GET /accounts API to retrieve an accountId by name and then using that accountId with Zoomdata's DELETE /accounts API to delete the account.
+This sample application demonstrates the use of Zoomdata's administrative REST APIs. With it, you can create multiple accounts at once, list existing accounts, and delete accounts by name. The sample demonstrates using Zoomdata's GET `/accounts/` API to retrieve an `accountId` by account name and then using that `accountId` with Zoomdata's DELETE `/accounts/` API to delete the account.
 
 ## Commands
 
