@@ -5,14 +5,19 @@ This sample application demonstrates the use of Zoomdata's administrative REST A
 ## Commands
 
 1 Install Node.js on your machine if you have not already done so.
+
 2 Clone this repo.
+
 3 Download dependencies by running
 ```
 	npm install
 ```
+
 4 Start the command line tool
 ```
 	node index.js
 ```
+
 5 Enter `h` to see available commands.
+
 6 Before you can begin work, you must use the `login` command to set credentials.
