@@ -11,8 +11,9 @@ var credentials = {
     pw: "no password entered"
 };
 
-// default settings:
 
+// default settings for our REST API calls,
+// as required by the request-promise library:
 var currentSettings = {
     "async": true,
     "crossDomain": true,
@@ -31,7 +32,8 @@ var currentSettings = {
 
 function createAccount(url, accountName) {
   var options = Object.assign(currentSettings, {url}, {body:{name: accountName}});
-    
+
+  // We use the request-promise library to handle our REST API calls
   request
     .post(options)
     .auth(credentials.id, credentials.pw)
@@ -53,6 +55,7 @@ function listAccounts(url) {
   url = url + "?limit=500";
   var options = Object.assign(currentSettings, {url});
 
+  // We use the request-promise library to handle our REST API calls
   request
     .get(options)
     .auth(credentials.id, credentials.pw)
@@ -97,6 +100,7 @@ function getAccountIdByName(name) {
     var options = Object.assign(currentSettings, {url});
     var accountId;
 
+    // We use the request-promise library to handle our REST API calls
     var accountIdval = request
         .get(options)
         .auth(credentials.id, credentials.pw)
@@ -122,6 +126,7 @@ function deleteAccount(accountId) {
   var options = Object.assign(currentSettings, {url});
   var accountId;
 
+  // We use the request-promise library to handle our REST API calls
   request
     .delete(options)
     .auth(credentials.id, credentials.pw)
@@ -136,6 +141,8 @@ function deleteAccount(accountId) {
 
 
 // Vorpal setup
+// Vorpal is a neat little tool for making shell applications.
+// See http://vorpal.js.org/ for more information.
 
 vorpal
     .delimiter(chalk.magenta('zd-provisioner:'))
@@ -143,7 +150,6 @@ vorpal
 
 
 // Vorpal commands
-
 
 vorpal
 .command('login [serverUrl] [username] [password]', 'Sets login credentials for server. serverUrl = www.xyz.com ONLY. No protocol, no extensions')
@@ -210,6 +216,12 @@ vorpal
   var name = args.name;
   var accountId;
 
+  // Here we use our promisified function. It gets the accountID
+  // by its name and returns a promise. When the promise is
+  // completed, the accountID is passed to deleteAccount.
+  // If we do not handle asynchronicity, the app will probably
+  // attempt the delete before it has the accountID in hand,
+  // and will fail as a result.
   getAccountIdByName(name)
   .then( function(id) {
     deleteAccount(id);
