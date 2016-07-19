@@ -1,7 +1,6 @@
 var request = require('request-promise');
 var vorpal = require('vorpal')();
 var chalk = vorpal.chalk;
-var async = require('async');
 var promise = require('bluebird');
 
 
