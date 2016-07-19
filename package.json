@@ -1,8 +1,8 @@
 {
-  "name": "zd-training-helper",
+  "name": "admin-sample-provisioner",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "provisioner.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,8 +13,8 @@
   "author": "omar sial",
   "license": "ISC",
   "dependencies": {
-    "async": "^2.0.0-rc.3",
     "request-promise": "^2.0.1",
-    "vorpal": "^1.10.10"
+    "vorpal": "^1.10.10",
+    "bluebird": "^3.4.1 "
   }
 }
