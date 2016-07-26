@@ -15,7 +15,7 @@ This sample application demonstrates the use of Zoomdata's administrative REST A
 
 4 Start the command line tool
 ```
-	node index.js
+	node provisioner.js
 ```
 
 5 Enter `h` to see available commands.
