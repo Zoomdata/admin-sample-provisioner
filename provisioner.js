@@ -1,8 +1,6 @@
 var request = require('request-promise');
 var vorpal = require('vorpal')();
 var chalk = vorpal.chalk;
-var promise = require('bluebird');
-
 
 // You must replace these credentials with your own supervisor credentials
 
@@ -12,9 +10,7 @@ var credentials = {
 };
 
 
-// default settings for our REST API calls,
-// as required by the request-promise library:
-// ^^ this more required by our api, not request-promise.
+// default settings for our REST API calls
 var currentSettings = {
     "async": true,
     "crossDomain": true,
@@ -62,16 +58,15 @@ function listAccounts(url) {
     .auth(credentials.id, credentials.pw)
     .then(function(response) {
 
-      // Take returned list of account objects
+      // Take returned list of accounts
       // and extract the name from each object
       // and add it to the list of names.
-      // usually people dont write 'account objects' imo 'accounts' is better.
 
       var data = response.data;
       var nameList = [];
 
-      data.forEach(function(datum) { // use more descriptive parameters, prob account here and accounts instead of data above.
-        nameList.push(datum.name);
+      data.forEach(function(accountObject) { 
+        nameList.push(accountObject.name);
       });
 
       console.log("Accounts:");
@@ -88,16 +83,15 @@ function listAccounts(url) {
 
 function getAccountIdByName(name) {
 
-  // We use bluebird.js to make a function (getAccountIdByName)
-  // return a promise. You can use native javascript
-  // promises or other approaches to help manage the
+  // We use native javascript promises. You can
+  // use other approaches to help manage the
   // asynchronous nature of REST calls.
-// this is a native promise! you dont need bluebird here. 'Promise' is native - you're importing bluebird as 'promise'
+
   return new Promise(function(resolve,reject) {
 
     // The /accounts/name api retrieves an account by name
     // and returns an account object.
-// well written! 
+
     var url = 'accounts/name/' + name;
     var options = Object.assign(currentSettings, {url});
     var accountId;
@@ -162,15 +156,14 @@ vorpal
     
   credentials.id = username;
   credentials.pw = password;
-  // use string literals here - its more so that people are moving away from the string + string style these days:
-  currentSettings.baseUrl = "https://" + serverUrl + "/zoomdata/api/";
+
+  currentSettings.baseUrl = `https://${serverUrl}/zoomdata/api/`;
     
   cb();
 });
 
 vorpal
 .command('list credentials', 'List credentials currently in use')
-// for something like this the 'ls' command might be a nice shortcut. 
 .action(function(args,cb) {
   console.log("\nYou are currently using: ");
   console.log("username: ", credentials.id);
@@ -205,7 +198,7 @@ vorpal
 
 
 vorpal
-.command('list accounts', 'List all accounts')
+.command('ls', 'List all accounts')
 .action(function(args,cb) {
 
   // The listAccount methods requires the API path
@@ -219,8 +212,6 @@ vorpal
 .action(function(args,cb) {
   var name = args.name;
   var accountId;
-
-// see above re: native promises.
 
   // Here we use our promisified function. It gets the accountID
   // by its name and returns a promise. When the promise is
