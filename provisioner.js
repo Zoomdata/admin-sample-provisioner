@@ -5,8 +5,8 @@ var chalk = vorpal.chalk;
 // You must replace these credentials with your own supervisor credentials
 
 var credentials = {
-    id: "no id entered",
-    pw: "no password entered"
+    id: "supervisor",
+    pw: "Z00mda1a",
 };
 
 
@@ -14,9 +14,9 @@ var credentials = {
 var currentSettings = {
     "async": true,
     "crossDomain": true,
-    
+
     // You must replace the following baseUrl with your own Zoomdata instance
-    "baseUrl": "https://NO SERVER ENTERED/zoomdata/api/",
+    "baseUrl": "https://training.zoomdata.com/zoomdata/api/",
     "headers": {
       'accept': "application/vnd.zoomdata.v2+json,application/vnd.zoomdata+json",
       'x-zoomdata-media-type': 'application/vnd.zoomdata.v1+json',
@@ -116,6 +116,14 @@ function getAccountIdByName(name) {
   })
 }
 
+function addUsersToAccount(accountName, accounts) {
+	getAccountIdByName(accountName)
+	  .then(function(id) {
+		  accounts.forEach(function(account) {
+			  createAccount(`accounts/${id}/users`, account);
+		  });
+	  });
+}
 
 function deleteAccount(accountId) {
   var url = 'accounts/' + accountId;
@@ -174,7 +182,7 @@ vorpal
 });
 
 vorpal
-.command('create multiple [baseName] [count]', 'Add multiple accounts, each with an admin.')
+.command('c m [baseName] [count]', 'Add multiple accounts, each with an admin.')
 .action(function(args, cb) {
   var self = this;
   var baseName = args.baseName;
