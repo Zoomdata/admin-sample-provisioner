@@ -4,11 +4,10 @@ var config_1 = require("./config");
 exports.createAccountsArray = function (baseName, count) {
     var accountList = [];
     while (count > 0) {
-        var name_1 = baseName + count;
         var account = {
-            accountName: name_1,
-            username: name_1 + "-trainer",
-            groupName: 'subgroup' + count
+            accountName: "" + baseName + count,
+            username: "" + config_1.userConfig.username + count,
+            groupName: "" + config_1.accountConfig.groupName
         };
         accountList.push(account);
         count--;
@@ -22,7 +21,7 @@ exports.createAccount = function (url, config) {
         .post(options)
         .auth(config_1.credentials.id, config_1.credentials.pw)
         .then(function (response) {
-        console.log("Account created: ", response.name);
+        console.log("Account created: ", response.username || response.name);
     })
         .catch(function (err) {
         console.log('messed up', err);
