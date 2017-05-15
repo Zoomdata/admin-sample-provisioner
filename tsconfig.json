@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "target": "es5",
+    "outDir": "tsc",
+    "allowJs": true,
+    "sourceMap": true
+  },
+  "include": [
+    "app.js"
+  ]
+}
