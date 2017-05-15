@@ -2,7 +2,8 @@ var request = require('request-promise');
 
 var credentials = {
 	id: "supervisor",
-	pw: "Z00mda1a",
+	pw: "omaromar",
+	// pw: "train!ing23",
 };
 
 var currentSettings = {
@@ -10,7 +11,8 @@ var currentSettings = {
 	"crossDomain": true,
 
 	// You must replace the following baseUrl with your own Zoomdata instance
-	"baseUrl": "https://training.zoomdata.com/zoomdata/api/",
+	// "baseUrl": "https://training23.zoomdata.com:8443/zoomdata/api/",
+	"baseUrl": "/http://localhost:8080/zoomdata/api/",
 	"headers": {
 		'accept': "application/vnd.zoomdata.v2+json,application/vnd.zoomdata+json",
 		'x-zoomdata-media-type': 'application/vnd.zoomdata.v1+json',
@@ -121,29 +123,28 @@ function getGroupIdByName(name, id) {
 	})
 }
 
-// function createAccountsArray(baseName, count) {
-// 	var accountList = [];
-//
-// 	while(count > 0) {
-// 		let name = baseName + count;
-// 		let account = {
-// 			accountName: name,
-// 			username: `${name}-trainer`
-// 		};
-//
-// 		accountList.push(account);
-// 		count--;
-// 	}
-// 	console.log('ACCOUNTLIST', accountList);
-// 	return accountList;
-// }
-//
+function createAccountsArray(baseName, count) {
+	var accountList = [];
+
+	while(count > 0) {
+		let name = baseName + count;
+		let account = {
+			accountName: name,
+			username: `${name}-trainer`
+		};
+
+		accountList.push(account);
+		count--;
+	}
+	console.log('ACCOUNTLIST', accountList);
+	return accountList;
+}
 
 function createAccount(url, config) {
-	console.log('CONFIG CREATE ACCOUNT PARAMETER: ', url, config);
+	// console.log('CONFIG CREATE ACCOUNT PARAMETER: ', url, config);
 
 	var options = Object.assign(currentSettings, {url}, config);
-	console.log('URL OPTIONS HERE', url, options);
+	// console.log('URL OPTIONS HERE', url, options);
 	request
 	  .post(options)
 	  .auth(credentials.id, credentials.pw)
@@ -152,7 +153,7 @@ function createAccount(url, config) {
 	  })
 	  .catch(function(err) {
 		  console.log('messed up');
-		  // console.log("Error parsing id: ", err.response);
+		  console.log("Error parsing id: ", err);
 	  })
 }
 
@@ -175,52 +176,51 @@ function createConnectionOnAccount(url, config) {
 //
 // // MAKE AN ARRAY OF ACCOUNTS:
 //
-// const totalAccounts = createAccountsArray('Telia', 25);
+const totalAccounts = createAccountsArray('aaaaabattraining', 2);
 //
 // // CREATE ACCOUNTS:
 //
-// totalAccounts.forEach(account => {
-// 	//***
-// 	createAccount('accounts', {body: {name: account.accountName}});
-// });
+totalAccounts.forEach(account => {
+	createAccount('accounts', {body: {name: account.accountName}});
+});
 //
 // // CREATE USER AND ADD TO EACH ACCOUNT:
 //
-// setTimeout(() => {
-// 	//***
-// 	totalAccounts.forEach((account, i) => {
-// 		getAccountIdByName(account.accountName)
-// 		  .then(id => {
-// 			  const config =  {
-// 				  // administrator:true,
-// 				  // email:"string",
-// 				  enabled:true,
-// 				  password:`training`,
-// 				  username: account.username,
-// 			  };
-//
-// 			  console.log(config, id);
-// 			  createAccount(`accounts/${id}/users`, {body: config});
-// 		  });
-// 	});
-// }, 4000);
+setTimeout(() => {
+	//***
+	totalAccounts.forEach((account, i) => {
+		getAccountIdByName(account.accountName)
+		  .then(id => {
+			  const config =  {
+				  // administrator:true,
+				  // email:"string",
+				  enabled:true,
+				  password:`training`,
+				  username: account.username,
+			  };
+
+			  console.log(config, id);
+			  createAccount(`accounts/${id}/users`, {body: config});
+		  });
+	});
+}, 2000);
 // //
 // // // CREATE GROUP AND ADD TO ACCOUNT:
 //
-// setTimeout(() => {
-// 	totalAccounts.forEach((account, i) => {
-// 		getAccountIdByName(account.accountName)
-// 		  .then(function(id) {
-// 			  const config = {body:{name: `${account.accountName}-group`}};
-//
-// 			  console.log(config, id);
-// 			  // createAccount(`accounts/${id}/users`, config);
-// 			  createAccount(`accounts/${id}/groups`, config);
-// 			  // createAccount(`groups/${id}/members`, user.username);
-// 			  // createAccount(`accounts/${id}/groups/name/${user.username}`, user.username);
-// 		  });
-// 	});
-// }, 8000);
+setTimeout(() => {
+	totalAccounts.forEach((account, i) => {
+		getAccountIdByName(account.accountName)
+		  .then(function(id) {
+			  const config = {body:{name: `${account.accountName}-group`}};
+
+			  // console.log(config, id);
+			  // createAccount(`accounts/${id}/users`, config);
+			  // createAccount(`accounts/${id}/groups`, config);
+			  createAccount(`groups/${id}/members`, user.username);
+			  // createAccount(`accounts/${id}/groups/name/${user.username}`, user.username);
+		  });
+	});
+}, 4000);
 
 // ADD USER TO GROUP:
 //
@@ -239,39 +239,39 @@ function createConnectionOnAccount(url, config) {
 // }, 2000);
 
 // ADD SOURCES:
-
-
-function getCompanySource() {
-	return getAccountIdByName('company')
-	            .then(id => {
-		            const url = `accounts/${id}/connections`;
-		            const getOptions = Object.assign(currentSettings, {url});
-		            return zdGet(url)
-		              .then(cons => {
-		              	return cons;
-		              })
-	            })
-}
-
-let sources;
-const sourcer = getCompanySource('company').then(d => sources = d);
-
-
-// const zdGetSources = zdGet()
-
-console.log('SOURCES HERE: ', sources);
-setTimeout(() => {
-	// console.log('source2: ', sources);
-	getAccountIdByName('Telia25')
-	  .then(id => {
-		  sources.forEach(source => {
-			  const url = `accounts/${id}/connections`;
-			  console.log(source);
-			  createConnectionOnAccount(url, source)
-		  })
-	  })
-
-}, 3000);
+//
+//
+// function getCompanySource() {
+// 	return getAccountIdByName('company')
+// 	            .then(id => {
+// 		            const url = `accounts/${id}/connections`;
+// 		            const getOptions = Object.assign(currentSettings, {url});
+// 		            return zdGet(url)
+// 		              .then(cons => {
+// 		              	return cons;
+// 		              })
+// 	            })
+// }
+//
+// let sources;
+// const sourcer = getCompanySource('company').then(d => sources = d);
+//
+//
+// // const zdGetSources = zdGet()
+//
+// console.log('SOURCES HERE: ', sources);
+// setTimeout(() => {
+// 	// console.log('source2: ', sources);
+// 	getAccountIdByName('Telia25')
+// 	  .then(id => {
+// 		  sources.forEach(source => {
+// 			  const url = `accounts/${id}/connections`;
+// 			  console.log(source);
+// 			  createConnectionOnAccount(url, source)
+// 		  })
+// 	  })
+//
+// }, 3000);
 
 
 
