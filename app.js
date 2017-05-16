@@ -105,7 +105,7 @@ setTimeout(() => {
 }, 4000);
 
 setTimeout(() => {
-    a.cloneAccounts('company')
+    a.cloneAccounts('Training1')
 }, 5000);
 
 

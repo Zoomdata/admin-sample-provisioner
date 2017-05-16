@@ -2,19 +2,19 @@
 /*
 Fill out all of the settings below to create accounts
  */
-const baseUrl = "http://localhost:8080/zoomdata/api/";
+// const baseUrl = "http://localhost:8080/zoomdata/api/";
 const username = "supervisor";
-const password = "omaromar";
+// const password = "omaromar";
+const password = "train!ing23";
 
-// const baseUrl = "https://training23.zoomdata.com:8443/zoomdata/api/";
+const baseUrl = "https://training23.zoomdata.com:8443/zoomdata/api/";
 
 export const credentials = {
     id: username,
-    pw: password,
-    // pw: "train!ing23",
+    // pw: password,
+    pw: "train!ing23",
 };
 export const groupPermissions = [
-    "manage_visualization_templates",
     "create_data_sources",
     "share_charts",
     "edit_calculations",
@@ -30,14 +30,14 @@ export const groupPermissions = [
  student1 will be added to group HR
  */
 export const accountConfig = {
-    baseName: 'AAaaaaa',
-    count: 10,
+    baseName: 'Training',
+    count: 3,
     addGroup: true, // MUST BE TRUE TO ADD GROUP
     groupName: 'HR'
 };
 
 export const userConfig = {
-    username: 'astudent',
+    username: 'student',
     password: 'something',
     makeAdmin: false // MUST SET TO TRUE TO MAKE ALL USERS ADMINS
 };

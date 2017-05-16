@@ -1,13 +1,12 @@
 "use strict";
-var baseUrl = "http://localhost:8080/zoomdata/api/";
 var username = "supervisor";
-var password = "omaromar";
+var password = "train!ing23";
+var baseUrl = "https://training23.zoomdata.com:8443/zoomdata/api/";
 exports.credentials = {
     id: username,
-    pw: password,
+    pw: "train!ing23",
 };
 exports.groupPermissions = [
-    "manage_visualization_templates",
     "create_data_sources",
     "share_charts",
     "edit_calculations",
@@ -15,13 +14,13 @@ exports.groupPermissions = [
     "save_filters"
 ];
 exports.accountConfig = {
-    baseName: 'AAaaaaa',
-    count: 10,
+    baseName: 'Training',
+    count: 3,
     addGroup: true,
     groupName: 'HR'
 };
 exports.userConfig = {
-    username: 'astudent',
+    username: 'student',
     password: 'something',
     makeAdmin: false
 };

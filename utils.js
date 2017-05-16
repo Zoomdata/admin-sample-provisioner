@@ -3,7 +3,7 @@ import { credentials, currentSettings, accountConfig, userConfig } from './confi
 
 export const createAccountsArray = (baseName, count) => {
     let accountList = [];
-    while (count > 0) {
+    while (count > 1) {
         let account = {
             accountName: `${baseName}${count}`,
             username: `${userConfig.username}${count}`,

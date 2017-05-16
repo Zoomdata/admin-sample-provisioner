@@ -75,6 +75,6 @@ setTimeout(function () {
     a.addUserToGroup();
 }, 4000);
 setTimeout(function () {
-    a.cloneAccounts('company');
+    a.cloneAccounts('Training1');
 }, 5000);
 //# sourceMappingURL=app.js.map

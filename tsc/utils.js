@@ -3,7 +3,7 @@ var request = require('request-promise');
 var config_1 = require("./config");
 exports.createAccountsArray = function (baseName, count) {
     var accountList = [];
-    while (count > 0) {
+    while (count > 1) {
         var account = {
             accountName: "" + baseName + count,
             username: "" + config_1.userConfig.username + count,
@@ -88,7 +88,6 @@ exports.addConnectionsToAccount = function (accountId, connections) {
 exports.addConnection = function (accountId, connection) {
     var url = "accounts/" + accountId + "/connections/";
     var name = connection.name, connectorName = connection.connectorName, connectorParameters = connection.connectorParameters;
-    console.log('CONNECTION CONFIG', connection);
     var options = Object.assign(config_1.currentSettings, { url: url }, { body: { name: name, connectorName: connectorName, connectorParameters: connectorParameters } });
     request
         .post(options)
@@ -101,7 +100,6 @@ exports.addConnection = function (accountId, connection) {
     });
 };
 exports.cloneAccountConnections = function (accountToClone, accountToModify) {
-    console.log('cloneAccountConnections', accountToClone, accountToModify);
     exports.getConnectionsByAccount(accountToClone)
         .then(function (connections) {
         exports.addConnectionsToAccount(accountToModify, connections);
