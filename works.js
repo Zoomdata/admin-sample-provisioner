@@ -273,7 +273,28 @@ setTimeout(() => {
 //
 // }, 3000);
 
+export const getConnectionsByAccount = (accountId) => {
+    return new Promise((resolve,reject) => {
+        const url = `accounts/${accountId}/connections/`;
+        const options = Object.assign(currentSettings, {url});
+        let groupIdval = request
+            .get(options)
+            .auth(credentials.id, credentials.pw)
+            .then((response) => {
+                return response.links[0].href.split('/').pop();
+            });
+        if (groupIdval) {
+            resolve(groupIdval);
+        }
+        else {
+            reject(groupIdval);
+        }
+    })
+}
 
+getConnectionsByAccount('591a3b58ef8645f0fc6bc75d').then(id => {
+    console.log('asdfasf', id);
+})
 
 // companyID = 5732368760b2682dd403155c
 // telia1ID = 582c786fe4b0614ba7c9530a

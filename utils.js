@@ -55,7 +55,7 @@ export const getGroupIdByName = (accountId, name) => {
         let groupIdval = request
             .get(options)
             .auth(credentials.id, credentials.pw)
-            .then(function(response) {
+            .then((response) => {
                 return response.links[0].href.split('/').pop();
             });
         if (groupIdval) {
@@ -66,3 +66,51 @@ export const getGroupIdByName = (accountId, name) => {
         }
     })
 };
+
+export const getConnectionsByAccount = (accountId) => {
+    return new Promise((resolve,reject) => {
+        const url = `accounts/${accountId}/connections/`;
+        const options = Object.assign(currentSettings, {url});
+        let groupIdval = request
+            .get(options)
+            .auth(credentials.id, credentials.pw)
+            .then(response => response.data);
+
+        if (groupIdval) {
+            resolve(groupIdval);
+        }
+        else {
+            reject(groupIdval);
+        }
+    })
+}
+
+export const addConnectionsToAccount = (accountId, connections) => {
+    connections.forEach(connection => {
+
+        console.log('addConnectionsToAccount', connection);
+        addConnection(accountId, connection);
+    });
+}
+
+export const addConnection = (accountId, connection) => {
+    const url = `accounts/${accountId}/connections/`;
+    const {name, connectorName, connectorParameters} = connection;
+    const options = Object.assign(currentSettings, {url}, {body:{name, connectorName, connectorParameters}});
+    request
+        .post(options)
+        .auth(credentials.id, credentials.pw)
+        .then((response) => {
+            console.log("Account created: ", response.username || response.name || response);
+        })
+        .catch((err) => {
+            console.log('messed up', err);
+        })
+}
+
+export const cloneAccountConnections = (accountToClone, accountToModify) => {
+    getConnectionsByAccount(accountToClone)
+        .then(connections => {
+            addConnectionsToAccount(accountToModify, connections);
+        });
+}

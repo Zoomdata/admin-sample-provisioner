@@ -51,6 +51,16 @@ var App = (function () {
             });
         });
     };
+    App.prototype.cloneAccounts = function (accountName) {
+        var _this = this;
+        utils_1.getAccountIdByName(accountName)
+            .then(function (id) {
+            _this.accounts.forEach(function (account) {
+                utils_1.cloneAccountConnections(id, account.accountId);
+                console.log('ACCCCCOCUNT', account);
+            });
+        });
+    };
     return App;
 }());
 var a = new App(baseName, count);
@@ -64,4 +74,7 @@ setTimeout(function () {
 setTimeout(function () {
     a.addUserToGroup();
 }, 4000);
+setTimeout(function () {
+    a.cloneAccounts('company');
+}, 5000);
 //# sourceMappingURL=app.js.map

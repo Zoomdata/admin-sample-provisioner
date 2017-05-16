@@ -1,6 +1,14 @@
-
-import {getGroupIdByName, createAccount, getAccountIdByName, createAccountsArray} from './utils';
-import { groupPermissions, accountConfig, userConfig } from './config'
+import {
+    cloneAccountConnections,
+    createAccount,
+    createAccountsArray,
+    getAccountIdByName,
+    getGroupIdByName,
+    getConnectionsByAccount,
+    addConnectionsToAccount,
+    addConnection
+} from "./utils";
+import {accountConfig, groupPermissions, userConfig} from "./config";
 
 const { baseName, count } = accountConfig;
 
@@ -58,6 +66,17 @@ class App {
                 });
         });
     }
+
+    cloneAccounts(accountName) {
+        getAccountIdByName(accountName)
+            .then(id => {
+                this.accounts.forEach(account => {
+                    cloneAccountConnections(id, account.accountId);
+                    console.log('ACCCCCOCUNT', account);
+                })
+            })
+
+    }
 }
 
 /*
@@ -71,7 +90,6 @@ class App {
 
  */
 const a = new App(baseName, count);
-
 a.createAccounts();
 
 setTimeout(() => {
@@ -82,9 +100,15 @@ setTimeout(() => {
     a.addGroupToAccounts()
 }, 3000);
 
-
 setTimeout(() => {
     a.addUserToGroup()
 }, 4000);
+
+setTimeout(() => {
+    a.cloneAccounts('company')
+}, 5000);
+
+
+
 
 

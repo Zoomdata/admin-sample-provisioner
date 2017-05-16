@@ -15,13 +15,13 @@ exports.groupPermissions = [
     "save_filters"
 ];
 exports.accountConfig = {
-    baseName: 'asbTraining',
-    count: 2,
+    baseName: 'AAaaaaa',
+    count: 10,
     addGroup: true,
     groupName: 'HR'
 };
 exports.userConfig = {
-    username: 'sstudent',
+    username: 'astudent',
     password: 'something',
     makeAdmin: false
 };

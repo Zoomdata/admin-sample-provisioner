@@ -63,4 +63,48 @@ exports.getGroupIdByName = function (accountId, name) {
         }
     });
 };
+exports.getConnectionsByAccount = function (accountId) {
+    return new Promise(function (resolve, reject) {
+        var url = "accounts/" + accountId + "/connections/";
+        var options = Object.assign(config_1.currentSettings, { url: url });
+        var groupIdval = request
+            .get(options)
+            .auth(config_1.credentials.id, config_1.credentials.pw)
+            .then(function (response) { return response.data; });
+        if (groupIdval) {
+            resolve(groupIdval);
+        }
+        else {
+            reject(groupIdval);
+        }
+    });
+};
+exports.addConnectionsToAccount = function (accountId, connections) {
+    connections.forEach(function (connection) {
+        console.log('addConnectionsToAccount', connection);
+        exports.addConnection(accountId, connection);
+    });
+};
+exports.addConnection = function (accountId, connection) {
+    var url = "accounts/" + accountId + "/connections/";
+    var name = connection.name, connectorName = connection.connectorName, connectorParameters = connection.connectorParameters;
+    console.log('CONNECTION CONFIG', connection);
+    var options = Object.assign(config_1.currentSettings, { url: url }, { body: { name: name, connectorName: connectorName, connectorParameters: connectorParameters } });
+    request
+        .post(options)
+        .auth(config_1.credentials.id, config_1.credentials.pw)
+        .then(function (response) {
+        console.log("Account created: ", response.username || response.name || response);
+    })
+        .catch(function (err) {
+        console.log('messed up', err);
+    });
+};
+exports.cloneAccountConnections = function (accountToClone, accountToModify) {
+    console.log('cloneAccountConnections', accountToClone, accountToModify);
+    exports.getConnectionsByAccount(accountToClone)
+        .then(function (connections) {
+        exports.addConnectionsToAccount(accountToModify, connections);
+    });
+};
 //# sourceMappingURL=utils.js.map
